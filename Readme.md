@@ -1,3 +1,9 @@
-Документация по парсингу
+## Документация Laravel
 
-[https://github.com/unikent/laravel-curl]
+http://laravel.ru/docs/v4/
+
+http://laravel.com/docs
+
+## Документация по парсингу
+
+https://github.com/unikent/laravel-curl
