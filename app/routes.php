@@ -20,3 +20,5 @@ Route::get('/', function()
 
 Route::get('search/{query}', 'SearchController@search');
 Route::post('search/{query}', 'SearchController@search');
+
+Route::get('/test', 'TestController@showIndex');
