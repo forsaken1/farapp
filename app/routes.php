@@ -11,7 +11,12 @@
 |
 */
 
+Route::pattern('query', '\w+');
+
 Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+Route::get('search/{query}', 'SearchController@search');
+Route::post('search/{query}', 'SearchController@search');
