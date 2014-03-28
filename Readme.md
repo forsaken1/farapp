@@ -1,3 +1,12 @@
+### Развертывание
+
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
+git clone git@github.com:forsaken1/farapp.git
+
+composer update
+
 ## Документация Laravel
 
 http://laravel.ru/docs/v4/
