@@ -1,6 +1,6 @@
 <?php
 
-class User extends Eloquent {
+class Category extends Eloquent {
 	protected $guarded = array();
-
+	
 }

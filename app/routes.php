@@ -26,6 +26,9 @@ Route::get('test', 'TestController@showIndex');
 
 Route::get('gcm_test', 'PushController@test');
 
+Route::get('register', 'RegisterController@register');
+Route::get('get', 'GetController@get');
+
 # production routes
 Route::post('register', 'RegisterController@register');
 Route::post('get', 'GetController@get');
