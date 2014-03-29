@@ -1,29 +1,57 @@
-### Деплой
+-### Деплой
 
-online: http://farapp.herokuapp.com/
+-
 
-`git pull origin master` - загрузим последнюю версию из общего репозитория
+-online: http://farapp.herokuapp.com/
 
-`git remote add heroku git@heroku.com:farapp.git`
+-
 
-`git push heroku master`
+-`git pull origin master` - загрузим последнюю версию из общего репозитория
 
-### Развертывание
+-
 
-`curl -sS https://getcomposer.org/installer | php`
+-`git remote add heroku git@heroku.com:farapp.git`
 
-`mv composer.phar /usr/local/bin/composer`
+-
 
-`git clone git@github.com:forsaken1/farapp.git`
+-`git push heroku master`
 
-`composer update`
+-
 
-### Документация Laravel
+-### Развертывание
 
-http://laravel.ru/docs/v4/
+-
 
-http://laravel.com/docs
+-`curl -sS https://getcomposer.org/installer | php`
 
-### Документация по парсингу
+-
 
-https://github.com/unikent/laravel-curl
+-`mv composer.phar /usr/local/bin/composer`
+
+-
+
+-`git clone git@github.com:forsaken1/farapp.git`
+
+-
+
+-`composer update`
+
+-
+
+-### Документация Laravel
+
+-
+
+-http://laravel.ru/docs/v4/
+
+-
+
+-http://laravel.com/docs
+
+-
+
+-### Документация по парсингу
+
+-
+
+-https://github.com/unikent/laravel-curl
