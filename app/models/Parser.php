@@ -107,6 +107,8 @@ return $Page;
     $temp=ExtractPhone($Page);
     if($temp=="") break;
     $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
+    $temp=str_replace(array('(','-',')',' '), "", $temp);
+    $temp=str_replace('+7', "8", $temp);
     $phones[]=$temp;
     }
     return $phones;
