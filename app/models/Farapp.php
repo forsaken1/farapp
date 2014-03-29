@@ -76,7 +76,6 @@ class Farapp
     	{
     		Log::error('Something is really going wrong.');
     	}
-    	// iconv('cp1251', 'UTF8', ...);
     	$response = self::$curl->simple_get(self::$url . '/' . self::$method, self::$params);
     	return str_get_html(iconv('cp1251', 'UTF8', $response));
     }

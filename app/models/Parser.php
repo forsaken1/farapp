@@ -168,6 +168,9 @@ $mailes=array();
 
     /**
      * Получение данных со страницы отдельной квартиры
+     * @param $method Ссылка на страницу
+     * @param $params Массив параметров
+     * @return array Распарсенные параметры
      */
     public static function getFlatPost($method, $params = array())
     {
@@ -183,6 +186,12 @@ $mailes=array();
         );
     }
 
+    /**
+     * Получение данных со страницы списка квартир
+     * @param $method Ссылка на страницу
+     * @param $params Массив параметров
+     * @return array Распарсенные параметры
+     */
     public static function getPosts($method, $params = array())
     {
         $html = Farapp::getInstance($method, $params)->getPars();
@@ -196,12 +205,108 @@ $mailes=array();
 
             $result[] = array(
                 'key' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
+                'link' => (is_null($post->find('a.bulletinLink', 0))) ? null : str_replace('.html', '', str_replace('http://vladivostok.farpost.ru/', '', $post->find('a.bulletinLink', 0)->getAttribute('href'))),
                 'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
-                'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
+                'price' => (is_null($post->find('div.finalPrice', 0))) ? null : str_replace(' р.', '', $post->find('div.finalPrice', 0)->innertext),
                 'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
             );
         }
 
         return $result;
     }
+}
+
+
+
+//Возвращает страницу с контактными данными обявы
+public static function  getJobPost($url)
+{
+ if( $curl = curl_init() ) 
+ {
+    
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
+    
+    $firm=trim(self::GetBetween($Page,'<span class="inplace" data-field="firmTitle">','</span>'));
+    $branch=trim(self::GetBetween($Page,'span class="inplace" data-field="firmBranch">','</span>'));
+    $vacancy=trim(self::GetBetween($Page,'<span class="inplace" data-field="type">','</span>'));
+    $employment=trim(self::GetBetween($Page,'<span class="inplace" data-field="employment">','</span>'));
+    
+    $author=trim(strip_tags(self::GetBetween($Page,'<span class="userNick ">','</a>')));
+    
+    $education=trim(self::GetBetween($Page,'<span class="inplace" data-field="education">','</span>'));
+    $experience=trim(self::GetBetween($Page,'<span class="inplace" data-field="experience">','</span>'));
+    
+    $obligation=strip_tags(trim(self::GetBetween($Page,'<p class="inplace" data-field="jobObligation">','</p>')));
+    $description=strip_tags(trim(self::GetBetween($Page,'<p class="inplace" data-field="text">','</p>')));
+    
+    $paymentform=(self::GetBetween($Page,'wageMin-wageMax-wageDescription">','</span></div>'));
+    $Page=substr($Page, strpos($Page,$paymentform)+strlen($paymentform));
+    $payment=(self::GetBetween($Page,'wageMin-wageMax-wageDescription">','</span></div>'));
+        curl_close($curl);
+	return array(
+	'payment'=>$payment,
+	'paymentform'=>$paymentform,
+	'firm'=>$firm,
+	'branch'=>$branch,
+	'vacancy'=>$vacancy,
+	'employment'=>$employment,
+	'obligation'=>$obligation,
+	'description'=>$description,
+	'education'=>$education,
+	'experience'=>$experience,
+	'author'=>$author,
+	);
+ } 
+return false;
+}
+
+//Парсит продажу автомобилей
+public static function getCarPost($url)
+{
+ if( $curl = curl_init() ) 
+ {
+    
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
+    
+    $price=trim(self::GetBetween($Page,'<span class="inplace" data-field="price">','</span>'));
+    $model=trim(self::GetBetween($Page,'<span class="inplace" data-field="model">','</span>'));
+    $year=trim(self::GetBetween($Page,'<span class="inplace" data-field="year">','</span>'));
+    $displacement=trim(self::GetBetween($Page,'<span class="inplace" data-field="displacement">','</span>'));
+    $transmission=trim(self::GetBetween($Page,'<span class="inplace" data-field="transmission">','</span>'));
+    $drive=trim(self::GetBetween($Page,'<span class="inplace" data-field="drive">','</span>'));
+    $fuel=trim(self::GetBetween($Page,'<span class="inplace" data-field="fuel">','</span>'));
+    $hasDocuments=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasDocuments">','</span>'));
+    $hasRussianMileage=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasRussianMileage">','</span>'));
+    $isAfterCrash=trim(self::GetBetween($Page,'<span class="inplace" data-field="isAfterCrash">','</span>'));
+    $condition=trim(self::GetBetween($Page,'<span class="inplace" data-field="condition">','</span>'));
+    
+    $author=trim(strip_tags(self::GetBetween($Page,'<span class="userNick ">','</a>')));
+    $guarantee=trim(strip_tags(self::GetBetween($Page,'<div class="inplace" data-field="delivery">','</div>')));
+    $description=trim(strip_tags(self::GetBetween($Page,'<p class="inplace" data-field="text">','</p>')));
+    
+     curl_close($curl);
+	return array(
+	'price'=>$price,
+	'model'=>$model,
+	'year'=>$year,
+	'displacement'=>$displacement,
+	'transmission'=>$transmission,
+	'drive'=>$drive,
+	'fuel'=>$fuel,
+	'hasDocuments'=>$hasDocuments,
+	'hasRussianMileage'=>$hasRussianMileage,
+	'isAfterCrash'=>$isAfterCrash,
+	'condition'=>$condition,
+	'guarantee'=>$guarantee,
+	'description'=>$description,
+	'author'=>$author,
+	);
+ } 
+return false;
 }
