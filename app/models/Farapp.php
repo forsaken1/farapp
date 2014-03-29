@@ -6,7 +6,7 @@
 class Farapp
 {
     private static $instance;
-	private static $curl;
+	private static $curl = null;
 	private static $params = array();
 	private static $method = null;
 	private static $url = 'http://vladivostok.farpost.ru';
@@ -17,14 +17,13 @@ class Farapp
 
 	public static function getInstance($method = null)
 	{
-		self::$curl = New Curl;
-		if ( ! is_null($method))
-		{
-			self::$method = $method;
-		}
+		self::$curl = (is_null(self::$curl)) : New Curl ? self::$curl;
+		self::$method = (is_null($method)) : null ? $method;
+
         if ( empty(self::$instance) ) {
             self::$instance = new self();
         }
+
         return self::$instance;
 	}
 

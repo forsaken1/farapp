@@ -66,4 +66,9 @@ class Parser
     {
     return self::GetBetween($Page,'<span class="phone">','</span>');
     }
+
+    public static function getPosts($page)
+    {
+        
+    }
 }
