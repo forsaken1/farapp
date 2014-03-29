@@ -80,6 +80,10 @@ public static function GetContacts($url)
     
     curl_setopt($curl, CURLOPT_REFERER, $url);
     //curl_setopt($curl,CURLOPT_FOLLOWLOCATION,1);
+    
+    curl_setopt($curl, CURLOPT_URL, "http://vladivostok.farpost.ru/");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
    
     
     curl_setopt($curl, CURLOPT_URL, "http://vladivostok.farpost.ru/".$URL."?ajax=1");
