@@ -2,34 +2,48 @@
 
 class Farapp
 {
-	private $curl;
-	private $params = array();
-	private $method = null;
+    private static $instance;
+	private static $curl;
+	private static $params = array();
+	private static $method = null;
 
-	public function __construct($method)
+	public static function getInstance($method = null)
 	{
-		$this->curl = New Curl;
-		$this->method = $method;
+		self::$curl = New Curl;
+		if ( ! is_null($method))
+		{
+			self::$method = $method;
+		}
+        if ( empty(self::$instance) ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+	}
+
+	public function setMethod($method)
+	{
+		self::$method = $method;
+		return $this;
 	}
 
     public function setParam($key, $value)
     {
-    	$this->params[$key] = $value;
+    	self::$params[$key] = $value;
     	return $this;
     }
 
     public function setParams($parr)
     {
-    	$this->params = array_merge($this->params, $parr);
+    	self::$params = array_merge(self::$params, $parr);
     	return $this;
     }
 
     public function getPars()
     {
-    	if (is_null($this->method))
+    	if (is_null(self::$method))
     	{
     		Log::error('Something is really going wrong.');
     	}
-    	return $this->curl->simple_get('http://vladivostok.farpost.ru' . $this->method, $this->params);
+    	return self::$curl->simple_get('http://vladivostok.farpost.ru' . self::$method, self::$params);
     }
 }

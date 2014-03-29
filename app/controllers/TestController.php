@@ -5,8 +5,7 @@ class TestController extends Controller
 
 	public function showIndex()
 	{
-		$fapfap = new Farapp('/realty/rent_flats/');
-		var_dump($fapfap->setParams(array(
+		var_dump(Farapp::getInstance()->setMethod('/realty/rent_flats/')->setParams(array(
 			'price_min' => 10000,
 			'price_max' => 15000,
 			'areaTotal_min' => 10,
