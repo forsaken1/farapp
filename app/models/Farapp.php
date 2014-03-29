@@ -7,6 +7,10 @@ class Farapp
 	private static $params = array();
 	private static $method = null;
 
+    private function __construct() {}
+    private function __clone() {}
+    private function __wakeup() {}
+
 	public static function getInstance($method = null)
 	{
 		self::$curl = New Curl;
