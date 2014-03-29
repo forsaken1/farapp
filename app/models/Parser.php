@@ -67,7 +67,7 @@ class Parser
     return self::GetBetween($Page,'<span class="phone">','</span>');
     }
 
-    public static function getPost($method)
+    public static function getFlatPost($method)
     {
         $page = Farapp::getInstance($method)->getPars();
         return array(
