@@ -18,13 +18,9 @@ class Farapp
 	public static function getInstance($method = null)
 	{
 		self::$curl = (is_null(self::$curl)) : New Curl ? self::$curl;
-		self::$method = (is_null($method)) : null ? $method;
-
-        if ( empty(self::$instance) ) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+		self::$method = $method;
+		
+        return (empty(self::$instance)) ? new self() : self::$instance;
 	}
 
     /**
