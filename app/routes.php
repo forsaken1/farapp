@@ -22,3 +22,5 @@ Route::get('search/{query}', 'SearchController@search');
 Route::post('search/{query}', 'SearchController@search');
 
 Route::get('/test', 'TestController@showIndex');
+
+Route::get('google_api_test', 'PushController@test');
