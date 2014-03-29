@@ -17,9 +17,9 @@ class Farapp
 
 	public static function getInstance($method = null)
 	{
-		self::$curl = (is_null(self::$curl)) : New Curl ? self::$curl;
+		self::$curl = (is_null(self::$curl)) ? New Curl : self::$curl;
 		self::$method = $method;
-		
+
         return (empty(self::$instance)) ? new self() : self::$instance;
 	}
 
@@ -63,7 +63,7 @@ class Farapp
      */
     public function getURL()
     {
-    	return self::$url . self::$method;
+    	return self::$url  . '/' . self::$method;
     }
 
     /**
@@ -76,6 +76,6 @@ class Farapp
     	{
     		Log::error('Something is really going wrong.');
     	}
-    	return self::$curl->simple_get(self::$url . self::$method, self::$params);
+    	return self::$curl->simple_get(self::$url . '/' . self::$method, self::$params);
     }
 }

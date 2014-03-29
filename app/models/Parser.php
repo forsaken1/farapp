@@ -67,8 +67,17 @@ class Parser
     return self::GetBetween($Page,'<span class="phone">','</span>');
     }
 
-    public static function getPosts($page)
+    public static function getPost($method)
     {
-        
+        $page = Farapp::getInstance($method)->getPars();
+        return array(
+            'title' => self::GetBetween($page, '<span data-field="subject" class="inplace">', '</span>'),
+            'price' => self::GetBetween($page, '<span class="inplace" data-field="price">', '</span>'),
+            'district' => self::GetBetween($page, '<span class="inplace" data-field="district">', '</span>'),
+            'street' => self::GetBetween($page, '<span class="inplace" data-field="street-buildingId">', '</span>'),
+            'flatType' => self::GetBetween($page, '<span class="inplace" data-field="flatType">', '</span>'),
+            'area' => self::GetBetween($page, '<span class="inplace" data-field="areaTotal">', '</span>'),
+            'text' => self::GetBetween($page, '<p class="inplace" data-field="text">', '</p>'),
+        );
     }
 }
