@@ -18,9 +18,14 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+# test routes
 Route::get( 'search/{query}', 'SearchController@search'); //feature
 Route::post('search/{query}', 'SearchController@search'); //feature
 
 Route::get('test', 'TestController@showIndex');
 
 Route::get('gcm_test', 'PushController@test');
+
+# production routes
+Route::post('register', 'RegisterController@register');
+Route::post('get', 'GetController@get');
