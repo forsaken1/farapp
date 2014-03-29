@@ -196,6 +196,7 @@ $mailes=array();
 
             $result[] = array(
                 'key' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
+                'link' => (is_null($post->find('a.bulletinLink', 0))) ? null : str_replace('.html', '', str_replace('http://vladivostok.farpost.ru/', '', $post->find('a.bulletinLink', 0)->getAttribute('href'))),
                 'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
                 'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
                 'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
