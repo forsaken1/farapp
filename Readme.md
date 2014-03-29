@@ -27,3 +27,7 @@ http://laravel.com/docs
 ### Документация по парсингу
 
 https://github.com/unikent/laravel-curl
+
+### Документация по Google API
+
+https://github.com/google/google-api-php-client
