@@ -262,3 +262,51 @@ public static function  getJobPost($url)
  } 
 return false;
 }
+
+//Парсит продажу автомобилей
+public static function getCarPost($url)
+{
+ if( $curl = curl_init() ) 
+ {
+    
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
+    
+    $price=trim(self::GetBetween($Page,'<span class="inplace" data-field="price">','</span>'));
+    $model=trim(self::GetBetween($Page,'<span class="inplace" data-field="model">','</span>'));
+    $year=trim(self::GetBetween($Page,'<span class="inplace" data-field="year">','</span>'));
+    $displacement=trim(self::GetBetween($Page,'<span class="inplace" data-field="displacement">','</span>'));
+    $transmission=trim(self::GetBetween($Page,'<span class="inplace" data-field="transmission">','</span>'));
+    $drive=trim(self::GetBetween($Page,'<span class="inplace" data-field="drive">','</span>'));
+    $fuel=trim(self::GetBetween($Page,'<span class="inplace" data-field="fuel">','</span>'));
+    $hasDocuments=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasDocuments">','</span>'));
+    $hasRussianMileage=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasRussianMileage">','</span>'));
+    $isAfterCrash=trim(self::GetBetween($Page,'<span class="inplace" data-field="isAfterCrash">','</span>'));
+    $condition=trim(self::GetBetween($Page,'<span class="inplace" data-field="condition">','</span>'));
+    
+    $author=trim(strip_tags(self::GetBetween($Page,'<span class="userNick ">','</a>')));
+    $guarantee=trim(strip_tags(self::GetBetween($Page,'<div class="inplace" data-field="delivery">','</div>')));
+    $description=trim(strip_tags(self::GetBetween($Page,'<p class="inplace" data-field="text">','</p>')));
+    
+     curl_close($curl);
+	return array(
+	'price'=>$price,
+	'model'=>$model,
+	'year'=>$year,
+	'displacement'=>$displacement,
+	'transmission'=>$transmission,
+	'drive'=>$drive,
+	'fuel'=>$fuel,
+	'hasDocuments'=>$hasDocuments,
+	'hasRussianMileage'=>$hasRussianMileage,
+	'isAfterCrash'=>$isAfterCrash,
+	'condition'=>$condition,
+	'guarantee'=>$guarantee,
+	'description'=>$description,
+	'author'=>$author,
+	);
+ } 
+return false;
+}
