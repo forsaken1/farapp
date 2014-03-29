@@ -87,7 +87,54 @@ function GetImagesUrls($url)
  } 
 return $imgs;
 }
-var_dump(ExtractPhone(GetContacts("http://vladivostok.farpost.ru/samye-shikarnye-limuziny-na-dalnem-vostoke-infiniti-chrysler-vipavto-20112047.html")));
-var_dump(GetImagesUrls("http://vladivostok.farpost.ru/samye-shikarnye-limuziny-na-dalnem-vostoke-infiniti-chrysler-vipavto-20112047.html"));
 
+//Возвраащет массив с обявами name=>имя, url=>ардес, image=>картинка
+function GetPosts($url)
+{
+ if( $curl = curl_init() ) 
+ {
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
+    $Page2=$Page;
+    $temp="temp";	
+    $posts=array();
+    //"большие блоки"
+    while($temp!='')
+    {
+    $temp=GetBetween($Page,'<div class="image">','<table class="bottom">');
+    if($temp=="") break;
+    $image=GetBetween($temp,'<img src="','" alt="');
+    $URL=GetBetween($temp,'<a href="',' >');
+    $name=GetBetween($temp,'<div class="title">','</a>');
+    $name=GetBetween($name,$URL.' >','</a>');
+    $Page=substr($Page, strpos($Page,$temp)+strlen($temp)); 
+    $posts[]= array('name'=>$name,'url'=>$URL,'image'=>$image);  
+    }
+    $Page=$Page2;
+    $temp="temp";
+    //обычные блоки
+    while($temp!='')
+    {
+    $temp=GetBetween($Page,'imageCell','<td class="dateCell"');
+    if($temp=="") break;
+    $image=GetBetween($temp,'<img src="','" alt="');
+    $URL=GetBetween($temp,'href="','"');
+    $name=GetBetween($temp,'class="bulletinLink','</div>');
+    $name=GetBetween($name,$URL.'','</a>');
+    $name=str_replace(array('" >','"','>'), "", $name);
+    $Page=substr($Page, strpos($Page,$temp)+strlen($temp)); 
+    $posts[]= array('name'=>$name,'url'=>$URL,'image'=>$image);  
+    }
+
+
+ } 
+return $posts;
+}
+
+//var_dump(ExtractPhone(GetContacts("http://vladivostok.farpost.ru/samye-shikarnye-limuziny-na-dalnem-vostoke-infiniti-chrysler-vipavto-20112047.html")));
+//var_dump(GetImagesUrls("http://vladivostok.farpost.ru/samye-shikarnye-limuziny-na-dalnem-vostoke-infiniti-chrysler-vipavto-20112047.html"));
+
+var_dump(GetPosts("http://vladivostok.farpost.ru/service/celebrate/?page=3"));
+var_dump(GetPosts("http://vladivostok.farpost.ru/service/celebrate/"));
 ?>
