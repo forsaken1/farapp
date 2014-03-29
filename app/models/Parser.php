@@ -43,7 +43,7 @@ class Parser
     
 
 //Логин на фарпосте. Нужно вызывать перед запросом контактных данных. Создает файл cookies.txt
-function FarPostLogin($login="Hackaton",$password="EHtvRXABI0",$url='https://vladivostok.farpost.ru/sign?return=%2F')
+public static function FarPostLogin($login="Hackaton",$password="EHtvRXABI0",$url='https://vladivostok.farpost.ru/sign?return=%2F')
 {
  if( $curl = curl_init() ) 
  {
@@ -65,7 +65,7 @@ function FarPostLogin($login="Hackaton",$password="EHtvRXABI0",$url='https://vla
 
 
 //Возвращает страницу с контактными данными обявы
-function GetContacts($url)
+public static function GetContacts($url)
 {
  if( $curl = curl_init() ) 
  {
@@ -91,6 +91,32 @@ function GetContacts($url)
 return $Page;
 }
 
+//мега костыль, получает контактные данные инфа 146%
+public static function TryGetContacts($url)
+{
+if(FarPostLogin())
+{
+
+	while(1)
+	{	
+	$Page=self::GetContacts($url);
+	if(self::GetBetween($Page,'class="phone">',"span")!='')
+		{
+			unlink(public_path()."/cookies.txt");
+			self::FarPostLogin();
+			self::FarPostLogin();
+			sleep(1);
+		}
+	else
+	break;
+
+	}
+	
+}
+return $Page;
+}
+
+
     //Берет первый найденный телефон
     public static function ExtractPhone($Page)
     {
@@ -98,21 +124,43 @@ return $Page;
     }
     
     //Отдает массив с телефонами
-   function ExtractPhones($Page)
+   public static function ExtractPhones($Page)
    {
    $phones=array();
     $temp="temp";	
     while($temp!='')
     {
-    $temp=ExtractPhone($Page);
+    $temp=self::ExtractPhone($Page);
     if($temp=="") break;
     $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
     $temp=str_replace(array('(','-',')',' '), "", $temp);
-    $temp=str_replace('+7', "8", $temp);
+    //$temp=str_replace('+7', "8", $temp);
     $phones[]=$temp;
     }
     return $phones;
    }
+
+
+//Берет первый найденный имейл
+public static function ExtractMail($Page)
+{
+return self::GetBetween($Page,'mailto:','?');
+}
+
+//Отдает массив с имейлами
+public static function ExtractMails($Page)
+{
+$mailes=array();
+    $temp="temp";	
+    while($temp!='')
+    {
+    $temp=self::ExtractMail($Page);
+    if($temp=="") break;
+    $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
+    $mailes[]=$temp;
+    }
+    return $mailes;
+}
 
     public static function getFlatPost($method)
     {
