@@ -69,7 +69,7 @@ class Parser
 
     public static function getFlatPost($method)
     {
-        $page = Farapp::getInstance($method)->getPars();
+        $page = iconv('cp1251', 'UTF8', Farapp::getInstance($method)->getPars());
         return array(
             'title' => self::GetBetween($page, '<span data-field="subject" class="inplace">', '</span>'),
             'price' => self::GetBetween($page, '<span class="inplace" data-field="price">', '</span>'),

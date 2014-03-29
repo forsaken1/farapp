@@ -15,7 +15,7 @@ class TestController extends Controller
 
 		//var_dump(Parser::GetRazdely());
 
-		var_dump(Parser::getPost('prodam-gostinku-na-russkoj-25248591.html'));
+		var_dump(Parser::getFlatPost('prodam-gostinku-na-russkoj-25248591.html'));
 	}
 
 }
