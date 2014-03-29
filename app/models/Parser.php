@@ -206,3 +206,50 @@ $mailes=array();
         return $result;
     }
 }
+
+
+
+//Возвращает страницу с контактными данными обявы
+public static function  getJobPost($url)
+{
+ if( $curl = curl_init() ) 
+ {
+    
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
+    
+    $firm=trim(self::GetBetween($Page,'<span class="inplace" data-field="firmTitle">','</span>'));
+    $branch=trim(self::GetBetween($Page,'span class="inplace" data-field="firmBranch">','</span>'));
+    $vacancy=trim(self::GetBetween($Page,'<span class="inplace" data-field="type">','</span>'));
+    $employment=trim(self::GetBetween($Page,'<span class="inplace" data-field="employment">','</span>'));
+    
+    $author=trim(strip_tags(self::GetBetween($Page,'<span class="userNick ">','</a>')));
+    
+    $education=trim(self::GetBetween($Page,'<span class="inplace" data-field="education">','</span>'));
+    $experience=trim(self::GetBetween($Page,'<span class="inplace" data-field="experience">','</span>'));
+    
+    $obligation=strip_tags(trim(self::GetBetween($Page,'<p class="inplace" data-field="jobObligation">','</p>')));
+    $description=strip_tags(trim(self::GetBetween($Page,'<p class="inplace" data-field="text">','</p>')));
+    
+    $paymentform=(self::GetBetween($Page,'wageMin-wageMax-wageDescription">','</span></div>'));
+    $Page=substr($Page, strpos($Page,$paymentform)+strlen($paymentform));
+    $payment=(self::GetBetween($Page,'wageMin-wageMax-wageDescription">','</span></div>'));
+        curl_close($curl);
+	return array(
+	'payment'=>$payment,
+	'paymentform'=>$paymentform,
+	'firm'=>$firm,
+	'branch'=>$branch,
+	'vacancy'=>$vacancy,
+	'employment'=>$employment,
+	'obligation'=>$obligation,
+	'description'=>$description,
+	'education'=>$education,
+	'experience'=>$experience,
+	'author'=>$author,
+	);
+ } 
+return false;
+}
