@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Google/Client.php';
-
 class PushController extends BaseController {
 
 	public function test()
