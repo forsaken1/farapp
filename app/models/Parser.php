@@ -67,17 +67,42 @@ class Parser
     return self::GetBetween($Page,'<span class="phone">','</span>');
     }
 
-    public static function getFlatPost($method)
+    /**
+     * Получение данных со страницы отдельной квартиры
+     */
+    public static function getFlatPost($method, $params = array())
     {
-        $page = iconv('cp1251', 'UTF8', Farapp::getInstance($method)->getPars());
+        $html = Farapp::getInstance($method . '.html', $params)->getPars();
         return array(
-            'title' => self::GetBetween($page, '<span data-field="subject" class="inplace">', '</span>'),
-            'price' => self::GetBetween($page, '<span class="inplace" data-field="price">', '</span>'),
-            'district' => self::GetBetween($page, '<span class="inplace" data-field="district">', '</span>'),
-            'street' => self::GetBetween($page, '<span class="inplace" data-field="street-buildingId">', '</span>'),
-            'flatType' => self::GetBetween($page, '<span class="inplace" data-field="flatType">', '</span>'),
-            'area' => self::GetBetween($page, '<span class="inplace" data-field="areaTotal">', '</span>'),
-            'text' => self::GetBetween($page, '<p class="inplace" data-field="text">', '</p>'),
+            'subject' => $html->find('span[data-field=subject]', 0)->innertext,
+            'price' => $html->find('span[data-field=price]', 0)->innertext,
+            'district' => $html->find('span[data-field=district]', 0)->innertext,
+            'street' => $html->find('span[data-field=street-buildingId]', 0)->innertext,
+            'flatType' => $html->find('span[data-field=flatType]', 0)->innertext,
+            'area' => $html->find('span[data-field=areaTotal]', 0)->innertext,
+            'text' => $html->find('p[data-field=text]', 0)->innertext,
         );
+    }
+
+    public static function getPosts($method, $params = array())
+    {
+        $html = Farapp::getInstance($method, $params)->getPars();
+        $result = array();
+        $i = 1;
+        while ( ! is_null($html->find('table.viewdirBulletinTable>tbody.native>tr', $i)))
+        {
+            $post = $html->find('tbody.native>tr', $i);
+            $i++;
+            if (is_null($post->find('a.bulletinLink', 0))) continue;
+
+            $result[] = array(
+                'key' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
+                'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
+                'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
+                'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
+            );
+        }
+
+        return $result;
     }
 }

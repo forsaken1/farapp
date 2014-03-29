@@ -73,3 +73,5 @@ if (is_dir($workbench = __DIR__.'/../workbench'))
 {
 	Illuminate\Workbench\Starter::start($workbench);
 }
+
+require __DIR__.'/../app/start/simple_html_dom.php';
