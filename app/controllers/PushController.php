@@ -2,20 +2,21 @@
 
 class PushController extends BaseController {
 
-	function sendPushNotificationToGCM($registation_ids, $message)
+	private static $url = 'https://android.googleapis.com/gcm/send';
+	private static $google_api_key = 'AIzaSyDqnS3844V6eACSFjQpFW1ngzakRmZ4pP4';
+
+	private function sendPushNotificationToGCM($registation_ids, $message)
 	{
-		$url = 'https://android.googleapis.com/gcm/send';
 		$fields = array(
 			'registration_ids' => $registation_ids,
 			'data' => $message,
 		);
-		define("GOOGLE_API_KEY", "AIzaSyDqnS3844V6eACSFjQpFW1ngzakRmZ4pP4");   
 		$headers = array(
-			'Authorization: key=' . GOOGLE_API_KEY,
+			'Authorization: key='.self::$google_api_key,
 			'Content-Type: application/json'
 		);
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_URL, self::$url);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -23,10 +24,12 @@ class PushController extends BaseController {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 		$result = curl_exec($ch);
+
 		if ($result === FALSE) {
 			die('Curl failed: ' . curl_error($ch));
 		}
 		curl_close($ch);
+
 		return $result;
 	}
 
@@ -39,9 +42,12 @@ class PushController extends BaseController {
 		$client->setClientSecret('BmKlhDHClYCS8g-PKTZ_uelz');
 		$client->setRedirectUri('/');
 
+		$test_registration_id = 'APA91bGsb0nWZaQmSu9C6G2xlkZTgPBmNcRxtdoFkd7uxjcqcsy97kUU42uEZync_j9cM_VS96bJdLP0YSd7iQZAwjit58zs3KzV-FCpHdTxO4V4dD_HoFM8wKN3895zLX6xhOJTigkClDDWWB_2BhA0_RWK6IRQMg';
+		$test_text = 'hello, android';
+
 		echo $this->sendPushNotificationToGCM(
-			array('APA91bGsb0nWZaQmSu9C6G2xlkZTgPBmNcRxtdoFkd7uxjcqcsy97kUU42uEZync_j9cM_VS96bJdLP0YSd7iQZAwjit58zs3KzV-FCpHdTxO4V4dD_HoFM8wKN3895zLX6xhOJTigkClDDWWB_2BhA0_RWK6IRQMg'), 
-			array('message' => 'hello, android')
+			array($test_registration_id),
+			array('message' => $test_text)
 		);
 	}
 }

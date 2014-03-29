@@ -18,10 +18,9 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::get('search/{query}', 'SearchController@search');
-Route::post('search/{query}', 'SearchController@search');
+Route::get( 'search/{query}', 'SearchController@search'); //feature
+Route::post('search/{query}', 'SearchController@search'); //feature
 
-Route::get('/test', 'TestController@showIndex');
+Route::get('test', 'TestController@showIndex');
 
-Route::get('google_api_test', 'PushController@test');
-Route::get('auth', 'PushController@auth');
+Route::get('gcm_test', 'PushController@test');
