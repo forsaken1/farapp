@@ -168,6 +168,9 @@ $mailes=array();
 
     /**
      * Получение данных со страницы отдельной квартиры
+     * @param $method Ссылка на страницу
+     * @param $params Массив параметров
+     * @return array Распарсенные параметры
      */
     public static function getFlatPost($method, $params = array())
     {
@@ -183,6 +186,12 @@ $mailes=array();
         );
     }
 
+    /**
+     * Получение данных со страницы списка квартир
+     * @param $method Ссылка на страницу
+     * @param $params Массив параметров
+     * @return array Распарсенные параметры
+     */
     public static function getPosts($method, $params = array())
     {
         $html = Farapp::getInstance($method, $params)->getPars();
