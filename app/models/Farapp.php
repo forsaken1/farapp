@@ -17,14 +17,10 @@ class Farapp
 
 	public static function getInstance($method = null)
 	{
-		self::$curl = (is_null(self::$curl)) : New Curl ? self::$curl;
-		self::$method = (is_null($method)) : null ? $method;
+		self::$curl = (is_null(self::$curl)) ? New Curl : self::$curl;
+		self::$method = $method;
 
-        if ( empty(self::$instance) ) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+        return (empty(self::$instance)) ? new self() : self::$instance;
 	}
 
     /**
@@ -67,7 +63,7 @@ class Farapp
      */
     public function getURL()
     {
-    	return self::$url . self::$method;
+    	return self::$url  . '/' . self::$method;
     }
 
     /**
@@ -80,6 +76,8 @@ class Farapp
     	{
     		Log::error('Something is really going wrong.');
     	}
-    	return self::$curl->simple_get(self::$url . self::$method, self::$params);
+    	// iconv('cp1251', 'UTF8', ...);
+    	$response = self::$curl->simple_get(self::$url . '/' . self::$method, self::$params);
+    	return str_get_html(iconv('cp1251', 'UTF8', $response));
     }
 }
