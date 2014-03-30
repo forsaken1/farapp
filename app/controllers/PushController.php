@@ -75,7 +75,9 @@ class PushController extends BaseController {
 		{
 			foreach($users as $user)
 			{
-				$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
+				if(!$user->category_id($category_id))
+					continue;
+
 				$message = "Новые объявления на Farpost: $count ".self::$category_names[$category_id];
 
 				self::sendPushNotificationToGCM(
