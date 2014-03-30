@@ -30,5 +30,6 @@ Route::get('register', 'RegisterController@register');
 Route::get('get', 'GetController@get');
 
 # production routes
+Route::get( 'push', 'PushController@push');
 Route::post('register', 'RegisterController@register');
 Route::post('get', 'GetController@get');
