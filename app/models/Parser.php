@@ -20,151 +20,151 @@ class Parser
     //Возвращает массив с парой name=> Название раздела, url=> Ссылка раздела
     public static function GetRazdely($url='http://vladivostok.farpost.ru?ajax=1')
     {
-     if( $curl = curl_init() ) 
-     {
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-        $Page = curl_exec($curl);
-        curl_close($curl);
-        $temp="temp";   
-        $Razdely=array();
-        while($temp!='')
+        if( $curl = curl_init() ) 
         {
-        $temp=self::GetBetween($Page,'<a class="l1" href=','</a');
-        if($temp=="") break;
-        $URL=self::GetBetween($temp,'"','">');
-        $name=self::GetBetween($temp,'">','>');
-        $Page=substr($Page, strpos($Page,$name)+50); 
-        $Razdely[]= array('name'=>$name,'url'=>$URL);  
-        }
-     } 
-    return $Razdely;
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            $Page = curl_exec($curl);
+            curl_close($curl);
+            $temp="temp";   
+            $Razdely=array();
+            while($temp!='')
+            {
+                $temp=self::GetBetween($Page,'<a class="l1" href=','</a');
+                if($temp=="") break;
+                $URL=self::GetBetween($temp,'"','">');
+                $name=self::GetBetween($temp,'">','>');
+                $Page=substr($Page, strpos($Page,$name)+50); 
+                $Razdely[]= array('name'=>$name,'url'=>$URL);  
+            }
+        } 
+        return $Razdely;
     }
     
 
-//Логин на фарпосте. Нужно вызывать перед запросом контактных данных. Создает файл cookies.txt
-public static function FarPostLogin($login="Hackaton",$password="EHtvRXABI0",$url='https://vladivostok.farpost.ru/sign?return=%2F')
-{
- if( $curl = curl_init() ) 
- {
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    curl_setopt($curl, CURLOPT_COOKIEFILE, public_path()."/cookies.txt"); 
-    curl_setopt($curl, CURLOPT_COOKIEJAR, public_path()."/cookies.txt");
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:11.0) Gecko/20100101 Firefox/11.0"); 
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, "radio=sign&sign=".$login."&password=".$password);
-    
-    $Page = curl_exec($curl);
-    curl_close($curl);
-    //var_dump($Page);
-    if(strlen($Page)!=0) return false;
-    return true;
- } 
-}
+    //Логин на фарпосте. Нужно вызывать перед запросом контактных данных. Создает файл cookies.txt
+    public static function FarPostLogin($login="Hackaton",$password="EHtvRXABI0",$url='https://vladivostok.farpost.ru/sign?return=%2F')
+    {
+        if( $curl = curl_init() ) 
+        {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($curl, CURLOPT_COOKIEFILE, public_path()."/cookies.txt"); 
+            curl_setopt($curl, CURLOPT_COOKIEJAR, public_path()."/cookies.txt");
+            curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:11.0) Gecko/20100101 Firefox/11.0"); 
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, "radio=sign&sign=".$login."&password=".$password);
+
+            $Page = curl_exec($curl);
+            curl_close($curl);
+            //var_dump($Page);
+            if(strlen($Page)!=0) return false;
+            return true;
+        } 
+    }
 
 
-//Возвращает страницу с контактными данными обявы
-public static function GetContacts($url)
-{
- if( $curl = curl_init() ) 
- {
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    curl_setopt($curl, CURLOPT_COOKIEFILE, public_path()."/cookies.txt"); 
-    curl_setopt($curl, CURLOPT_COOKIEJAR, public_path()."/cookies.txt");
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:11.0) Gecko/20100101 Firefox/11.0");    
-    $Page = curl_exec($curl);
- 
-    $URL=self::GetBetween($Page,'class="bigbutton viewAjaxContacts" href="','">');
-    
-    curl_setopt($curl, CURLOPT_REFERER, $url);
-    //curl_setopt($curl,CURLOPT_FOLLOWLOCATION,1);
-    
-    curl_setopt($curl, CURLOPT_URL, "http://vladivostok.farpost.ru/");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    $Page = curl_exec($curl);
-   
-    
-    curl_setopt($curl, CURLOPT_URL, "http://vladivostok.farpost.ru/".$URL."?ajax=1");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    $Page = curl_exec($curl);
-    curl_close($curl);
+    //Возвращает страницу с контактными данными обявы
+    public static function GetContacts($url)
+    {
+        if( $curl = curl_init() ) 
+        {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($curl, CURLOPT_COOKIEFILE, public_path()."/cookies.txt"); 
+            curl_setopt($curl, CURLOPT_COOKIEJAR, public_path()."/cookies.txt");
+            curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:11.0) Gecko/20100101 Firefox/11.0");    
+            $Page = curl_exec($curl);
 
- } 
-return $Page;
-}
+            $URL=self::GetBetween($Page,'class="bigbutton viewAjaxContacts" href="','">');
 
-//мега костыль, получает контактные данные инфа 146%
-public static function TryGetContacts($url)
-{
-if(FarPostLogin())
-{
+            curl_setopt($curl, CURLOPT_REFERER, $url);
+            //curl_setopt($curl,CURLOPT_FOLLOWLOCATION,1);
 
-	while(1)
-	{	
-	$Page=self::GetContacts($url);
-	if(self::GetBetween($Page,'class="phone">',"span")!='')
-		{
-			unlink(public_path()."/cookies.txt");
-			self::FarPostLogin();
-			self::FarPostLogin();
-			sleep(1);
-		}
-	else
-	break;
+            curl_setopt($curl, CURLOPT_URL, "http://vladivostok.farpost.ru/");
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            $Page = curl_exec($curl);
 
-	}
-	
-}
-return $Page;
-}
+
+            curl_setopt($curl, CURLOPT_URL, "http://vladivostok.farpost.ru/".$URL."?ajax=1");
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            $Page = curl_exec($curl);
+            curl_close($curl);
+
+        } 
+        return $Page;
+    }
+
+    //мега костыль, получает контактные данные инфа 146%
+    public static function TryGetContacts($url)
+    {
+        if(FarPostLogin())
+        {
+
+            while(1)
+            {	
+                $Page=self::GetContacts($url);
+                if(self::GetBetween($Page,'class="phone">',"span")!='')
+                {
+                    unlink(public_path()."/cookies.txt");
+                    self::FarPostLogin();
+                    self::FarPostLogin();
+                    sleep(1);
+                }
+                else
+                break;
+
+            }
+
+        }
+        return $Page;
+    }
 
 
     //Берет первый найденный телефон
     public static function ExtractPhone($Page)
     {
-    return self::GetBetween($Page,"phone'>",'</span>');
+        return self::GetBetween($Page,"phone'>",'</span>');
     }
     
     //Отдает массив с телефонами
-   public static function ExtractPhones($Page)
-   {
-   $phones=array();
-    $temp="temp";	
-    while($temp!='')
+    public static function ExtractPhones($Page)
     {
-    $temp=self::ExtractPhone($Page);
-    if($temp=="") break;
-    $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
-    $temp=str_replace(array('(','-',')',' '), "", $temp);
-    //$temp=str_replace('+7', "8", $temp);
-    $phones[]=$temp;
+        $phones=array();
+        $temp="temp";	
+        while($temp!='')
+        {
+            $temp=self::ExtractPhone($Page);
+            if($temp=="") break;
+            $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
+            $temp=str_replace(array('(','-',')',' '), "", $temp);
+            //$temp=str_replace('+7', "8", $temp);
+            $phones[]=$temp;
+        }
+        return $phones;
     }
-    return $phones;
-   }
 
 
-//Берет первый найденный имейл
-public static function ExtractMail($Page)
-{
-return self::GetBetween($Page,'mailto:','?');
-}
-
-//Отдает массив с имейлами
-public static function ExtractMails($Page)
-{
-$mailes=array();
-    $temp="temp";	
-    while($temp!='')
+    //Берет первый найденный имейл
+    public static function ExtractMail($Page)
     {
-    $temp=self::ExtractMail($Page);
-    if($temp=="") break;
-    $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
-    $mailes[]=$temp;
+        return self::GetBetween($Page,'mailto:','?');
     }
-    return $mailes;
-}
+
+    //Отдает массив с имейлами
+    public static function ExtractMails($Page)
+    {
+        $mailes=array();
+        $temp="temp";	
+        while($temp!='')
+        {
+            $temp=self::ExtractMail($Page);
+            if($temp=="") break;
+            $Page=substr($Page, strpos($Page,$temp)+strlen($temp));
+            $mailes[]=$temp;
+        }
+        return $mailes;
+    }
 
     /**
      * Получение данных со страницы отдельной квартиры
@@ -291,51 +291,50 @@ $mailes=array();
         return false;
     }
 
-//Парсит продажу автомобилей
-public static function getCarPost($url)
-{
- if( $curl = curl_init() ) 
- {
-    
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
-    $Page = curl_exec($curl);
-    
-    $price=trim(self::GetBetween($Page,'<span class="inplace" data-field="price">','</span>'));
-    $model=trim(self::GetBetween($Page,'<span class="inplace" data-field="model">','</span>'));
-    $year=trim(self::GetBetween($Page,'<span class="inplace" data-field="year">','</span>'));
-    $displacement=trim(self::GetBetween($Page,'<span class="inplace" data-field="displacement">','</span>'));
-    $transmission=trim(self::GetBetween($Page,'<span class="inplace" data-field="transmission">','</span>'));
-    $drive=trim(self::GetBetween($Page,'<span class="inplace" data-field="drive">','</span>'));
-    $fuel=trim(self::GetBetween($Page,'<span class="inplace" data-field="fuel">','</span>'));
-    $hasDocuments=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasDocuments">','</span>'));
-    $hasRussianMileage=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasRussianMileage">','</span>'));
-    $isAfterCrash=trim(self::GetBetween($Page,'<span class="inplace" data-field="isAfterCrash">','</span>'));
-    $condition=trim(self::GetBetween($Page,'<span class="inplace" data-field="condition">','</span>'));
-    
-    $author=trim(strip_tags(self::GetBetween($Page,'<span class="userNick ">','</a>')));
-    $guarantee=trim(strip_tags(self::GetBetween($Page,'<div class="inplace" data-field="delivery">','</div>')));
-    $description=trim(strip_tags(self::GetBetween($Page,'<p class="inplace" data-field="text">','</p>')));
-    
-     curl_close($curl);
-	return array(
-	'price'=>$price,
-	'model'=>$model,
-	'year'=>$year,
-	'displacement'=>$displacement,
-	'transmission'=>$transmission,
-	'drive'=>$drive,
-	'fuel'=>$fuel,
-	'hasDocuments'=>$hasDocuments,
-	'hasRussianMileage'=>$hasRussianMileage,
-	'isAfterCrash'=>$isAfterCrash,
-	'condition'=>$condition,
-	'guarantee'=>$guarantee,
-	'description'=>$description,
-	'author'=>$author,
-	);
- } 
-return false;
-}
+    //Парсит продажу автомобилей
+    public static function getCarPost($url)
+    {
+        if( $curl = curl_init() ) 
+        {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+            $Page = curl_exec($curl);
+
+            $price=trim(self::GetBetween($Page,'<span class="inplace" data-field="price">','</span>'));
+            $model=trim(self::GetBetween($Page,'<span class="inplace" data-field="model">','</span>'));
+            $year=trim(self::GetBetween($Page,'<span class="inplace" data-field="year">','</span>'));
+            $displacement=trim(self::GetBetween($Page,'<span class="inplace" data-field="displacement">','</span>'));
+            $transmission=trim(self::GetBetween($Page,'<span class="inplace" data-field="transmission">','</span>'));
+            $drive=trim(self::GetBetween($Page,'<span class="inplace" data-field="drive">','</span>'));
+            $fuel=trim(self::GetBetween($Page,'<span class="inplace" data-field="fuel">','</span>'));
+            $hasDocuments=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasDocuments">','</span>'));
+            $hasRussianMileage=trim(self::GetBetween($Page,'<span class="inplace" data-field="hasRussianMileage">','</span>'));
+            $isAfterCrash=trim(self::GetBetween($Page,'<span class="inplace" data-field="isAfterCrash">','</span>'));
+            $condition=trim(self::GetBetween($Page,'<span class="inplace" data-field="condition">','</span>'));
+
+            $author=trim(strip_tags(self::GetBetween($Page,'<span class="userNick ">','</a>')));
+            $guarantee=trim(strip_tags(self::GetBetween($Page,'<div class="inplace" data-field="delivery">','</div>')));
+            $description=trim(strip_tags(self::GetBetween($Page,'<p class="inplace" data-field="text">','</p>')));
+
+            curl_close($curl);
+            return array(
+                'price'=>$price,
+                'model'=>$model,
+                'year'=>$year,
+                'displacement'=>$displacement,
+                'transmission'=>$transmission,
+                'drive'=>$drive,
+                'fuel'=>$fuel,
+                'hasDocuments'=>$hasDocuments,
+                'hasRussianMileage'=>$hasRussianMileage,
+                'isAfterCrash'=>$isAfterCrash,
+                'condition'=>$condition,
+                'guarantee'=>$guarantee,
+                'description'=>$description,
+                'author'=>$author,
+            );
+        } 
+        return false;
+    }
 }
