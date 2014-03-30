@@ -99,7 +99,7 @@ class Parser
     //мега костыль, получает контактные данные инфа 146%
     public static function TryGetContacts($url)
     {
-        $url="http://vladivostok.farpost.ru/".$url.".html";
+       
         if(self::FarPostLogin())
         {
 
