@@ -27,7 +27,7 @@ class RegisterController extends BaseController {
 		{
 			UserCategory::create(array('user_id' => $user->id, 'category_id' => $cat));
 		}
-		return Response::json($success_message);
+		return Response::json(self::$success_message);
 	}
 
 	private static function getValidData($data)
