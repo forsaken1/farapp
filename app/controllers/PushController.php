@@ -59,10 +59,10 @@ class PushController extends BaseController {
 		$new_free_count = 0;
 
 		# Parsing
-		$auto = Parser::getPosts('auto/sale', 1, 5);
-		$flat = Parser::getPosts('realty/sell_flats', 2, 5);
-		$job  = Parser::getPosts('auto/sale', 3, 5);
-		$free = Parser::getPosts('free', 4, 5);
+		$auto = Parser::getPosts('auto/sale', 1, 2);
+		$flat = Parser::getPosts('realty/sell_flats', 2, 2);
+		$job  = Parser::getPosts('auto/sale', 3, 2);
+		$free = Parser::getPosts('free', 4, 2);
 
 		$auto_old = Stack::where('category_id', 1)->get()->lists('id', 'key');
 		$flat_old = Stack::where('category_id', 2)->get()->lists('id', 'key');
