@@ -56,6 +56,7 @@ class PushController extends BaseController {
 		$count = 0;
 		$parsed = Parser::getPosts($url, $category_id, self::$pages_count);
 		$parsed_old = Stack::where('category_id', $category_id)->get()->lists('id', 'key');
+		$keys = array();
 
 		foreach($parsed as $item)
 		{
@@ -64,6 +65,7 @@ class PushController extends BaseController {
 
 			Stack::create($item);
 			$count++;
+			$keys[] = $item['key'];
 		}
 
 		$users = User::all();
@@ -83,7 +85,8 @@ class PushController extends BaseController {
 				$sended_message_count++;
 			}
 		}
-		echo "New adds count: $count";
+		$keys && print "Keys: ".implode(', ', $keys);
+		echo "\nNew adds count: $count";
 		echo "\nSended message count: $sended_message_count";
 		echo "\n\n";
 	}
