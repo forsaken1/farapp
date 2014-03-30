@@ -15,9 +15,11 @@ class TestController extends Controller
 
 		//var_dump(Parser::GetRazdely());
 
-		//print_r(Parser::getFlatPost('prodam-gostinku-na-russkoj-25248591'));
+		//var_dump(Parser::getCarPost('prodam-mikroavtobus-26483298'));
 
-		var_dump(Parser::getPosts('realty/sell_flats'));
+		//var_dump(Parser::getPosts('realty/sell_flats', 5));
+
+		var_dump(Parser::getPosts('auto/sale', 5, 5));
 	}
 
 }
