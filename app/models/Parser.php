@@ -98,7 +98,7 @@ class Parser
     //мега костыль, получает контактные данные инфа 146%
     public static function TryGetContacts($url)
     {
-        if(FarPostLogin())
+        if(self::FarPostLogin())
         {
 
             while(1)
@@ -109,7 +109,7 @@ class Parser
                     unlink(public_path()."/cookies.txt");
                     self::FarPostLogin();
                     self::FarPostLogin();
-                    sleep(1);
+                    usleep(200000);
                 }
                 else
                 break;
