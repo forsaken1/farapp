@@ -1,3 +1,7 @@
+### Логи задач cron для Google Cloud Message
+
+http://unmoment.ru/log.log
+
 ### Деплой
 
 online: http://farapp.herokuapp.com/

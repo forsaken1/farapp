@@ -26,4 +26,11 @@ class GetController extends BaseController {
 			'items' => Stack::whereIn('category_id', $ids)->where('created_at', '>=', $input['time'])->take(50)->get()->toArray()
 		));
 	}
+	
+	public function getPostInfo()
+	{
+		$input=Input::get();
+		return Response::json(Parser::getPostInfo($input['post']));
+	}
+	
 }
