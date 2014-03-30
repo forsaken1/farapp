@@ -192,7 +192,7 @@ $mailes=array();
      * @param $params Массив параметров
      * @return array Распарсенные параметры
      */
-    public static function getPosts($method, $params = array())
+    public static function getPosts($method, $count = 0, $params = array())
     {
         $html = Farapp::getInstance($method, $params)->getPars();
         $result = array();
@@ -202,6 +202,11 @@ $mailes=array();
             $post = $html->find('tbody.native>tr', $i);
             $i++;
             if (is_null($post->find('a.bulletinLink', 0))) continue;
+
+            if ($count > 0)
+            {
+                if (count($result) >= $count) break;
+            }
 
             $result[] = array(
                 'key' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
@@ -214,7 +219,6 @@ $mailes=array();
 
         return $result;
     }
-}
 
 
 
@@ -309,4 +313,5 @@ public static function getCarPost($url)
 	);
  } 
 return false;
+}
 }

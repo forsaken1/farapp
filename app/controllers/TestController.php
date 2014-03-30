@@ -17,7 +17,7 @@ class TestController extends Controller
 
 		//print_r(Parser::getFlatPost('prodam-gostinku-na-russkoj-25248591'));
 
-		var_dump(Parser::getPosts('realty/sell_flats'));
+		var_dump(Parser::getPosts('realty/sell_flats', 5));
 	}
 
 }
