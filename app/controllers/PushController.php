@@ -35,13 +35,6 @@ class PushController extends BaseController {
 
 	public function test()
 	{
-		$client = new Google_Client();
-		$client->setApplicationName("FarApp");
-		$client->setDeveloperKey("AIzaSyDqnS3844V6eACSFjQpFW1ngzakRmZ4pP4");
-		$client->setClientId('617404061855.apps.googleusercontent.com');
-		$client->setClientSecret('BmKlhDHClYCS8g-PKTZ_uelz');
-		$client->setRedirectUri('/');
-
 		$users = User::all();
 
 		foreach($users as $user)
@@ -52,6 +45,7 @@ class PushController extends BaseController {
 				array($user->devise_id),
 				array('message' => $test_text)
 			);
+			echo 'ok'.$user->devise_id;
 		}
 	}
 
