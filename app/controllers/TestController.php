@@ -21,7 +21,7 @@ class TestController extends Controller
 
 		//var_dump(Parser::getPosts('auto/sale', 5, 5));
 
-		var_dump(Parser::getFreePost('zamechatelnye-shenki-v-dobrye-ruki-26606856'));
+		var_dump(Parser::getPosts('free', 4, 1, 10));
 	}
 
 }
