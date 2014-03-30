@@ -342,7 +342,7 @@ class Parser
         } 
         return false;
     }
-}
+
 
 //Ссылки на картинки обявы в массиве
 public static function GetImagesUrls($url)
@@ -379,3 +379,4 @@ return $imgs;
 		'phones'=>self::ExtractPhones($Page),
 		);
 	}
+}
