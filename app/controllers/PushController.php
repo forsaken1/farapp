@@ -5,7 +5,7 @@ class PushController extends BaseController {
 	private static $url = 'https://android.googleapis.com/gcm/send';
 	private static $google_api_key = 'AIzaSyDqnS3844V6eACSFjQpFW1ngzakRmZ4pP4';
 
-	private function sendPushNotificationToGCM($registation_ids, $message)
+	private static function sendPushNotificationToGCM($registation_ids, $message)
 	{
 		$fields = array(
 			'registration_ids' => $registation_ids,
@@ -49,5 +49,13 @@ class PushController extends BaseController {
 			array($test_registration_id),
 			array('message' => $test_text)
 		);
+	}
+
+	public function push()
+	{
+		#parsing
+
+		#send-to-apps
+
 	}
 }
