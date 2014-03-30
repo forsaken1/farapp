@@ -4,6 +4,8 @@ class PushController extends BaseController {
 
 	private static $url = 'https://android.googleapis.com/gcm/send';
 	private static $google_api_key = 'AIzaSyDqnS3844V6eACSFjQpFW1ngzakRmZ4pP4';
+	private static $pages_count = 4;
+	private static $category_names = array('', 'автомобилей', 'квартир', 'вакансий', 'бесплатных');
 
 	private static function sendPushNotificationToGCM($registation_ids, $message)
 	{
@@ -49,123 +51,60 @@ class PushController extends BaseController {
 		}
 	}
 
-	public function pushAuto()
+	public static function push($url, $category_id)
 	{
-		$new_auto_count = 0;
-		$auto = Parser::getPosts('auto/sale', 1, 5);
-		$auto_old = Stack::where('category_id', 1)->get()->lists('id', 'key');
+		$count = 0;
+		$parsed = Parser::getPosts($url, $category_id, self::$pages_count);
+		$parsed_old = Stack::where('category_id', $category_id)->get()->lists('id', 'key');
 
-		foreach($auto as $item)
+		foreach($parsed as $item)
 		{
-			if(isset($auto_old[ $item['key'] ]) && $auto_old[ $item['key'] ])
+			if(isset($parsed_old[ $item['key'] ]) && $parsed_old[ $item['key'] ])
 				continue;
+
 			Stack::create($item);
-			$new_auto_count++;
+			$count++;
 		}
 
 		$users = User::all();
+		$sended_message_count = 0;
 
-		foreach($users as $user)
+		if($count)
 		{
-			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
-			$message = 'Новые объявления на Farpost: ';
-			isset($category[1]) && $new_auto_count && $message .= $new_auto_count.' автомобилей';
+			foreach($users as $user)
+			{
+				$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
+				$message = "Новые объявления на Farpost: $count ".self::$category_names[$category_id];
 
-			$this->sendPushNotificationToGCM(
-				array($user->devise_id),
-				array('message' => $message)
-			);
+				self::sendPushNotificationToGCM(
+					array($user->devise_id),
+					array('message' => $message)
+				);
+				$sended_message_count++;
+			}
 		}
-		echo 'ok';
+		echo "New adds count: $count";
+		echo "\nSended message count: $sended_message_count";
+		echo "\n\n";
+	}
+
+	public function pushAuto()
+	{
+		self::push('auto/sale', 1);
 	}
 
 	public function pushFlat()
 	{
-		$new_flat_count = 0;
-		$flat = Parser::getPosts('realty/sell_flats', 2, 5);
-		$flat_old = Stack::where('category_id', 2)->get()->lists('id', 'key');
-		
-		foreach($flat as $item)
-		{
-			if(isset($flat_old[ $item['key'] ]) && $flat_old[ $item['key'] ])
-				continue;
-			Stack::create($item);
-			$new_flat_count++;
-		}
-
-		$users = User::all();
-
-		foreach($users as $user)
-		{
-			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
-			$message = 'Новые объявления на Farpost: ';
-			isset($category[2]) && $new_flat_count && $message .= $new_flat_count.' квартир ';
-
-			$this->sendPushNotificationToGCM(
-				array($user->devise_id),
-				array('message' => $message)
-			);
-		}
-		echo 'ok';
+		self::push('realty/sell_flats', 2);
 	}
 
 	public function pushJob()
 	{
-		$new_job_count  = 0;
-		$job  = Parser::getPosts('/job/vacancy/+/IT+-+%D2%E5%EB%E5%EA%EE%EC/', 3, 5);
-		$job_old  = Stack::where('category_id', 3)->get()->lists('id', 'key');
-		
-		foreach($job as $item)
-		{
-			if(isset($job_old[ $item['key'] ]) && $job_old[ $item['key'] ])
-				continue;
-			Stack::create($item);
-			$new_job_count++;
-		}
-
-		$users = User::all();
-
-		foreach($users as $user)
-		{
-			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
-			$message = 'Новые объявления на Farpost: ';
-			isset($category[3]) && $new_job_count  && $message .= $new_job_count. ' вакансий ';
-
-			$this->sendPushNotificationToGCM(
-				array($user->devise_id),
-				array('message' => $message)
-			);
-		}
-		echo 'ok';
+		self::push('/job/vacancy/+/IT+-+%D2%E5%EB%E5%EA%EE%EC/', 3);
 	}
 
 	public function pushFree()
 	{
-		$new_free_count = 0;
-		$free = Parser::getPosts('free', 4, 5);
-		$free_old = Stack::where('category_id', 4)->get()->lists('id', 'key');
-
-		foreach($free as $item)
-		{
-			if(isset($free_old[ $item['key'] ]) && $free_old[ $item['key'] ])
-				continue;
-			Stack::create($item);
-			$new_free_count++;
-		}
-
-		$users = User::all();
-
-		foreach($users as $user)
-		{
-			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
-			$message = 'Новые объявления на Farpost: ';
-			isset($category[4]) && $new_free_count && $message .= $new_free_count.' бесплатных вещей ';
-
-			$this->sendPushNotificationToGCM(
-				array($user->devise_id),
-				array('message' => $message)
-			);
-		}
-		echo 'ok';
+		self::push('free', 4);
 	}
 }
