@@ -30,6 +30,15 @@ Route::get('register', 'RegisterController@register');
 Route::get('get', 'GetController@get');
 
 # production routes
-Route::get( 'push', 'PushController@push');
+Route::post('get',      'GetController@get');
+Route::get( 'push',     'PushController@push');
 Route::post('register', 'RegisterController@register');
-Route::post('get', 'GetController@get');
+
+# debug information
+Route::group(array('prefix' => 'admin'), function()
+{
+	Route::get('users',         'AdminController@users');
+	Route::get('stack',         'AdminController@stack');
+	Route::get('category',      'AdminController@category');
+	Route::get('user_category', 'AdminController@user_category');
+});
