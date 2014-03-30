@@ -233,10 +233,11 @@ class Parser
                 {
                     if (count($result) >= $max_posts) break;
                 }
-
+                $key = (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
                 $result[] = array(
-                    'key' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
+                    'key' => $key,
                     'link' => (is_null($post->find('a.bulletinLink', 0))) ? null : str_replace('.html', '', str_replace('http://vladivostok.farpost.ru/', '', $post->find('a.bulletinLink', 0)->getAttribute('href'))),
+                    'img' => (is_null($post->find('td[data-bulletin-id=' .  $key. ']>a>img', 0))) ? null : $post->find('td[data-bulletin-id=' .  $key. ']>a>img', 0)->getAttribute('src'),
                     'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
                     'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
                     'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
