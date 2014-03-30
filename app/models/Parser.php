@@ -69,6 +69,7 @@ class Parser
     {
         if( $curl = curl_init() ) 
         {
+            $url="http://vladivostok.farpost.ru/".$url.".html";
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
             curl_setopt($curl, CURLOPT_COOKIEFILE, public_path()."/cookies.txt"); 
@@ -98,7 +99,7 @@ class Parser
     //мега костыль, получает контактные данные инфа 146%
     public static function TryGetContacts($url)
     {
-        if(FarPostLogin())
+        if(self::FarPostLogin())
         {
 
             while(1)
@@ -109,7 +110,7 @@ class Parser
                     unlink(public_path()."/cookies.txt");
                     self::FarPostLogin();
                     self::FarPostLogin();
-                    sleep(1);
+                    usleep(200000);
                 }
                 else
                 break;
@@ -236,7 +237,7 @@ class Parser
                     'key' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->getAttribute('name'),
                     'link' => (is_null($post->find('a.bulletinLink', 0))) ? null : str_replace('.html', '', str_replace('http://vladivostok.farpost.ru/', '', $post->find('a.bulletinLink', 0)->getAttribute('href'))),
                     'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
-                    'price' => (is_null($post->find('div.finalPrice', 0))) ? null : str_replace(' р.', '', $post->find('div.finalPrice', 0)->innertext),
+                    'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
                     'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
                     'category_id' => $category_id,
                 );
@@ -253,6 +254,7 @@ class Parser
     {
         if( $curl = curl_init() ) 
         {
+            $url="http://vladivostok.farpost.ru/".$url.".html";
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
@@ -297,6 +299,7 @@ class Parser
     {
         if( $curl = curl_init() ) 
         {
+            $url="http://vladivostok.farpost.ru/".$url.".html";
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
