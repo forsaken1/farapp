@@ -19,7 +19,7 @@ class TestController extends Controller
 
 		//var_dump(Parser::getPosts('realty/sell_flats', 5));
 
-		var_dump(Parser::getPosts('auto/sale', 5));
+		var_dump(Parser::getPosts('auto/sale', 5, 5));
 	}
 
 }

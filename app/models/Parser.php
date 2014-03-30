@@ -199,6 +199,11 @@ $mailes=array();
         $result = array();
         for ($i = 0; $i < $max_pages; $i++)
         {
+            if ($max_posts > 0)
+            {
+                if (count($result) >= $max_posts) break;
+            }
+            
             $html = Farapp::getInstance($method . '?page=' . $i, $params)->getPars();
             $j = 1;
             while ( ! is_null($html->find('table.viewdirBulletinTable>tbody.native>tr', $j)))
