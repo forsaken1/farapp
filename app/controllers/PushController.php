@@ -67,7 +67,7 @@ class PushController extends BaseController {
 
 		foreach($users as $user)
 		{
-			$category = UserCategory::where('user_id', $user->id)->lists('id', 'id');
+			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
 			$message = 'Новые объявления на Farpost: ';
 			isset($category[1]) && $new_auto_count && $message .= $new_auto_count.' автомобилей';
 
@@ -97,7 +97,7 @@ class PushController extends BaseController {
 
 		foreach($users as $user)
 		{
-			$category = UserCategory::where('user_id', $user->id)->lists('id', 'id');
+			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
 			$message = 'Новые объявления на Farpost: ';
 			isset($category[2]) && $new_flat_count && $message .= $new_flat_count.' квартир ';
 
@@ -127,7 +127,7 @@ class PushController extends BaseController {
 
 		foreach($users as $user)
 		{
-			$category = UserCategory::where('user_id', $user->id)->lists('id', 'id');
+			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
 			$message = 'Новые объявления на Farpost: ';
 			isset($category[3]) && $new_job_count  && $message .= $new_job_count. ' вакансий ';
 
@@ -157,7 +157,7 @@ class PushController extends BaseController {
 
 		foreach($users as $user)
 		{
-			$category = UserCategory::where('user_id', $user->id)->lists('id', 'id');
+			$category = UserCategory::where('user_id', $user->id)->lists('category_id', 'category_id');
 			$message = 'Новые объявления на Farpost: ';
 			isset($category[4]) && $new_free_count && $message .= $new_free_count.' бесплатных вещей ';
 
