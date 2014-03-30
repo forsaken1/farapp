@@ -109,7 +109,7 @@ class Parser
                     unlink(public_path()."/cookies.txt");
                     self::FarPostLogin();
                     self::FarPostLogin();
-                    sleep(1);
+                    usleep(200000);
                 }
                 else
                 break;
