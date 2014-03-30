@@ -6,7 +6,7 @@ class GetController extends BaseController {
 	{
 		if( ! Request::isJson()) return Response::json(array('message' => 'Bad headers: not json'));
 
-		$input = Input::get();
+		$input = json_decode(Input::get());
 
 		if (strlen($input['time']) <= 0) return Response::json(array('message' => 'Not set time'));
 
