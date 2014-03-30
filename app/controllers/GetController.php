@@ -20,7 +20,7 @@ class GetController extends BaseController {
 
 		return Response::json(array(
 			'time' => Carbon\Carbon::now()->toDateTimeString(),
-			'isems' => Stack::whereIn('category_id', $ids)->where('created_at', '<=', $input['time'])->get()->toArray()
+			'items' => Stack::whereIn('category_id', $ids)->where('created_at', '<=', $input['time'])->get()->toArray()
 		));
 	}
 }
