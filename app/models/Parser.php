@@ -209,7 +209,7 @@ class Parser
      * @param $params Массив параметров
      * @return array Распарсенные параметры
      */
-    public static function getPosts($link, $max_pages = 1, $max_posts = 0, $params = array())
+    public static function getPosts($link, $category_id, $max_pages = 1, $max_posts = 0, $params = array())
     {
         $result = array();
         for ($i = 0; $i < $max_pages; $i++)
@@ -238,6 +238,7 @@ class Parser
                     'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
                     'price' => (is_null($post->find('div.finalPrice', 0))) ? null : str_replace(' р.', '', $post->find('div.finalPrice', 0)->innertext),
                     'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
+                    'category_id' => $category_id,
                 );
             }
         }

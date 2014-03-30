@@ -53,9 +53,71 @@ class PushController extends BaseController {
 
 	public function push()
 	{
-		#parsing
+		$new_auto_count = 0;
+		$new_flat_count = 0;
+		$new_job_count  = 0;
+		$new_free_count = 0;
 
-		#send-to-apps
+		# Parsing
+		$auto = Parser::getPosts('auto/sale', 1, 5);
+		$flat = Parser::getPosts('realty/sell_flats', 2, 5);
+		$job  = Parser::getPosts('auto/sale', 3, 5);
+		$free = Parser::getPosts('free', 4, 5);
 
+		$auto_old = Stack::where('category_id', 1)->get()->lists('id', 'key');
+		$flat_old = Stack::where('category_id', 2)->get()->lists('id', 'key');
+		$job_old  = Stack::where('category_id', 3)->get()->lists('id', 'key');
+		$free_old = Stack::where('category_id', 4)->get()->lists('id', 'key');
+
+		foreach($auto as $item)
+		{
+			if(isset($auto_old[ $item['key'] ]) && $auto_old[ $item['key'] ])
+				continue;
+			Stack::create($item);
+			$new_auto_count++;
+		}
+
+		foreach($flat as $item)
+		{
+			if(isset($flat_old[ $item['key'] ]) && $flat_old[ $item['key'] ])
+				continue;
+			Stack::create($item);
+			$new_flat_count++;
+		}
+
+		foreach($job as $item)
+		{
+			if(isset($job_old[ $item['key'] ]) && $job_old[ $item['key'] ])
+				continue;
+			Stack::create($item);
+			$new_job_count++;
+		}
+
+		foreach($free as $item)
+		{
+			if(isset($free_old[ $item['key'] ]) && $free_old[ $item['key'] ])
+				continue;
+			Stack::create($item);
+			$new_free_count++;
+		}
+
+		# Send-to-mobile-apps
+		$users = User::all();
+
+		foreach($users as $user)
+		{
+			$category = UserCategory::where('user_id', $user->id)->lists('id', 'id');
+			$message = 'Новые объявления на Farpost: ';
+			isset($category[1]) && $new_auto_count && $message .= $new_auto_count.' автомобилей ';
+			isset($category[2]) && $new_flat_count && $message .= $new_flat_count.' квартир ';
+			isset($category[3]) && $new_job_count  && $message .= $new_job_count. ' вакансий ';
+			isset($category[4]) && $new_free_count && $message .= $new_free_count.' бесплатных вещей ';
+
+			$this->sendPushNotificationToGCM(
+				array($user->device_id),
+				array('message' => $message)
+			);
+		}
+		echo 'ok';
 	}
 }
