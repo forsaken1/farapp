@@ -69,6 +69,7 @@ class Parser
     {
         if( $curl = curl_init() ) 
         {
+            $url="http://vladivostok.farpost.ru/".$url.".html";
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
             curl_setopt($curl, CURLOPT_COOKIEFILE, public_path()."/cookies.txt"); 
@@ -252,6 +253,7 @@ class Parser
     {
         if( $curl = curl_init() ) 
         {
+            $url="http://vladivostok.farpost.ru/".$url.".html";
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
@@ -296,6 +298,7 @@ class Parser
     {
         if( $curl = curl_init() ) 
         {
+            $url="http://vladivostok.farpost.ru/".$url.".html";
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_USERAGENT, "Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16");     
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
