@@ -9,9 +9,4 @@ class User extends Eloquent {
 		return $this->hasMany('UserCategory', 'user_id');
 	}
 
-	public function scopeCategoryId($query, $category_id)
-	{
-		return $query->where('category_id', $category_id)->get();
-	}
-
 }

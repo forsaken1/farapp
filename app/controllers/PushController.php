@@ -75,7 +75,8 @@ class PushController extends BaseController {
 		{
 			foreach($users as $user)
 			{
-				if(!$user->categoryId($category_id))
+				$category = UserCategory::where('user_id', $user->id)->where('category_id', $category_id)->get();
+				if(!$category)
 					continue;
 
 				$message = "Новые объявления на Farpost: $count ".self::$category_names[$category_id];
