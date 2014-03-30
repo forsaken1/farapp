@@ -9,16 +9,15 @@ class RegisterController extends BaseController {
 	{
 		if(!Request::isJson())
 		{
-			die('Bad headers: not json');
+			return Response::json(array('message' => 'Bad headers: not json'));
 		}
 
-		$input = Input::all();
+		$input = Input::json();
 		$input = self::getValidData($input);
 
 		if(!$input)
 		{
-			echo json_encode(self::$error_message);
-			return;
+			return Response::json(self::$error_message);
 		}
 		$user = User::firstOrNew(array('devise_id' => $input['register_id']));
 		$user->save();
