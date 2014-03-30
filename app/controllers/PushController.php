@@ -42,13 +42,17 @@ class PushController extends BaseController {
 		$client->setClientSecret('BmKlhDHClYCS8g-PKTZ_uelz');
 		$client->setRedirectUri('/');
 
-		$test_registration_id = 'APA91bGsb0nWZaQmSu9C6G2xlkZTgPBmNcRxtdoFkd7uxjcqcsy97kUU42uEZync_j9cM_VS96bJdLP0YSd7iQZAwjit58zs3KzV-FCpHdTxO4V4dD_HoFM8wKN3895zLX6xhOJTigkClDDWWB_2BhA0_RWK6IRQMg';
-		$test_text = 'hello, android';
+		$users = User::all();
 
-		echo $this->sendPushNotificationToGCM(
-			array($test_registration_id),
-			array('message' => $test_text)
-		);
+		foreach($users as $user)
+		{
+			$test_text = 'hello, android';
+
+			echo $this->sendPushNotificationToGCM(
+				array($user->devise_id),
+				array('message' => $test_text)
+			);
+		}
 	}
 
 	public function pushAuto()
@@ -74,7 +78,7 @@ class PushController extends BaseController {
 			isset($category[1]) && $new_auto_count && $message .= $new_auto_count.' автомобилей';
 
 			$this->sendPushNotificationToGCM(
-				array($user->device_id),
+				array($user->devise_id),
 				array('message' => $message)
 			);
 		}
@@ -104,7 +108,7 @@ class PushController extends BaseController {
 			isset($category[2]) && $new_flat_count && $message .= $new_flat_count.' квартир ';
 
 			$this->sendPushNotificationToGCM(
-				array($user->device_id),
+				array($user->devise_id),
 				array('message' => $message)
 			);
 		}
@@ -134,7 +138,7 @@ class PushController extends BaseController {
 			isset($category[3]) && $new_job_count  && $message .= $new_job_count. ' вакансий ';
 
 			$this->sendPushNotificationToGCM(
-				array($user->device_id),
+				array($user->devise_id),
 				array('message' => $message)
 			);
 		}
@@ -164,7 +168,7 @@ class PushController extends BaseController {
 			isset($category[4]) && $new_free_count && $message .= $new_free_count.' бесплатных вещей ';
 
 			$this->sendPushNotificationToGCM(
-				array($user->device_id),
+				array($user->devise_id),
 				array('message' => $message)
 			);
 		}
