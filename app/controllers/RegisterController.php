@@ -7,13 +7,12 @@ class RegisterController extends BaseController {
 
 	public function register()
 	{
-		$input = Input::all();
-
-		if(Request::isMethod('get'))
+		if(!Request::isJson())
 		{
-			$input = "{\n \"register_id\": \"APA91bGsb0nWZaQmSu9C6G2xlkZTgPBmNcRxtdoFkd7uxjcqcsy97kUU42uEZync_j9cM_VS96bJdLP0YSd7iQZAwjit58zs3KzV-FCpHdTxO4V4dD_HoFM8wKN3895zLX6xhOJTigkClDDWWB_2BhA0_RWK6IRQMg\",\n \"category\": [\n 1,\n 2\n ]\n}";
+			die('Bad headers: not json');
 		}
 
+		$input = Input::json();
 		$input = self::getValidData($input);
 
 		if(!$input)
