@@ -18,7 +18,7 @@ class GetController extends BaseController {
 
 		return Response::json(array(
 			'time' => Carbon\Carbon::now()->toDateTimeString(),
-			'items' => (count($ids) <= 0) ? array() : Stack::whereIn('category_id', $ids)->where('created_at', '>=', $input['time'])->take(50)->get()->toArray()
+			'items' => (count($ids) > 0) ? Stack::whereIn('category_id', $ids)->where('created_at', '>=', $input['time'])->take(50)->get()->toArray() : array(),
 		));
 	}
 	
