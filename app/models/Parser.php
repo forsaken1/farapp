@@ -168,13 +168,13 @@ $mailes=array();
 
     /**
      * Получение данных со страницы отдельной квартиры
-     * @param $method Ссылка на страницу
+     * @param $link Ссылка на страницу
      * @param $params Массив параметров
      * @return array Распарсенные параметры
      */
-    public static function getFlatPost($method, $params = array())
+    public static function getFlatPost($link, $params = array())
     {
-        $html = Farapp::getInstance($method . '.html', $params)->getPars();
+        $html = Farapp::getInstance($link . '.html', $params)->getPars();
         return array(
             'subject' => $html->find('span[data-field=subject]', 0)->innertext,
             'price' => $html->find('span[data-field=price]', 0)->innertext,
@@ -187,14 +187,29 @@ $mailes=array();
     }
 
     /**
+     * Получение данных со страницы отдельных бесплатный объявлений
+     * @param $link Ссылка на страницу
+     * @param $params Массив параметров
+     * @return array Распарсенные параметры
+     */
+    public static function getFreePost($link, $params = array())
+    {
+        $html = Farapp::getInstance($link . '.html', $params)->getPars();
+        return array(
+            'subject' => $html->find('span[data-field=subject]', 0)->innertext,
+            'text' => $html->find('p[data-field=text]', 0)->innertext,
+        );
+    }
+
+    /**
      * Получение данных со страницы списка квартир
-     * @param $method Ссылка на страницу
+     * @param $link Ссылка на страницу
      * @param $max_pages Количество страниц
      * @param $max_posts Лимит возвращаемых записей (0 = все)
      * @param $params Массив параметров
      * @return array Распарсенные параметры
      */
-    public static function getPosts($method, $max_pages = 1, $max_posts = 0, $params = array())
+    public static function getPosts($link, $max_pages = 1, $max_posts = 0, $params = array())
     {
         $result = array();
         for ($i = 0; $i < $max_pages; $i++)
@@ -203,8 +218,8 @@ $mailes=array();
             {
                 if (count($result) >= $max_posts) break;
             }
-            
-            $html = Farapp::getInstance($method . '?page=' . $i, $params)->getPars();
+
+            $html = Farapp::getInstance($link . '?page=' . $i, $params)->getPars();
             $j = 1;
             while ( ! is_null($html->find('table.viewdirBulletinTable>tbody.native>tr', $j)))
             {
