@@ -19,7 +19,7 @@ class RegisterController extends BaseController {
 		{
 			return Response::json(self::$error_message);
 		}
-		$user = User::firstOrNew(array('devise_id' => $input->register_id]));
+		$user = User::firstOrNew(array('devise_id' => $input->register_id));
 		$user->save();
 		UserCategory::where('user_id', $user->id)->delete();
 
