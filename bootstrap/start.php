@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('dev-300E4C-300E5C-300E7C', 'gotovets-hp')
+	'local' => array('dev-300E4C-300E5C-300E7C', 'gotovets-hp','laba-ThinkPad-X121e')
 
 ));
 
