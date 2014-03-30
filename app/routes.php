@@ -31,7 +31,10 @@ Route::get('get', 'GetController@get');
 
 # production routes
 Route::post('get',      'GetController@get');
-Route::get( 'push',     'PushController@push');
+Route::get( 'pushauto',     'PushController@pushAuto');
+Route::get( 'pushfree',     'PushController@pushFree');
+Route::get( 'pushjob',     'PushController@pushJob');
+Route::get( 'pushflat',     'PushController@pushFlat');
 Route::post('register', 'RegisterController@register');
 
 # debug information

@@ -99,6 +99,7 @@ class Parser
     //мега костыль, получает контактные данные инфа 146%
     public static function TryGetContacts($url)
     {
+        $url="http://vladivostok.farpost.ru/".$url.".html";
         if(self::FarPostLogin())
         {
 
@@ -210,7 +211,7 @@ class Parser
      * @param $params Массив параметров
      * @return array Распарсенные параметры
      */
-    public static function getPosts($link, $max_pages = 1, $max_posts = 0, $params = array())
+    public static function getPosts($link, $category_id, $max_pages = 1, $max_posts = 0, $params = array())
     {
         $result = array();
         for ($i = 0; $i < $max_pages; $i++)
@@ -239,6 +240,7 @@ class Parser
                     'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
                     'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
                     'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
+                    'category_id' => $category_id,
                 );
             }
         }
@@ -341,3 +343,39 @@ class Parser
         return false;
     }
 }
+
+//Ссылки на картинки обявы в массиве
+public static function GetImagesUrls($url)
+{
+	$url="http://vladivostok.farpost.ru/".$url.".html";
+  if( $curl = curl_init() ) 
+  {
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+    $Page = curl_exec($curl);
+ 
+    $temp="temp";	
+    $imgs=array();
+    $Page=self::GetBetween($Page,'<div class="bulletinImages">','<div class="items">');
+    while($temp!='')
+    {
+    $temp=self::GetBetween($Page,'<img src="','" data-zoom-image="');
+    if($temp=="") break;
+    $Page=substr($Page, strpos($Page,$temp)+strlen($temp)); 
+    $imgs[]= $temp;  
+    }
+
+ } 
+return $imgs;
+}
+
+    //Фотографии+телефоны+имелы поста
+    public static function getPostInfo($url)
+    {
+		$Page=TryGetContacts($url);
+		return array(
+		'images'=>self::GetImagesUrls($url),
+		'emails'=>self::ExtractMails($Page),
+		'phones'=>self::ExtractPhones($Page),
+		);
+	}

@@ -6,7 +6,7 @@ class GetController extends BaseController {
 	{
 		if( ! Request::isJson()) return Response::json(array('message' => 'Bad headers: not json'));
 
-		$input = json_decode(Input::get());
+		$input = Input::get();
 
 		if (strlen($input['time']) <= 0) return Response::json(array('message' => 'Not set time'));
 
@@ -23,7 +23,7 @@ class GetController extends BaseController {
 
 		return Response::json(array(
 			'time' => Carbon\Carbon::now()->toDateTimeString(),
-			'items' => Stack::whereIn('category_id', $ids)->where('created_at', '<=', $input['time'])->take(50)->get()->toArray()
+			'items' => Stack::whereIn('category_id', $ids)->where('created_at', '>=', $input['time'])->take(50)->get()->toArray()
 		));
 	}
 }
