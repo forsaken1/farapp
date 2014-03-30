@@ -150,7 +150,7 @@ class Parser
     //Берет первый найденный имейл
     public static function ExtractMail($Page)
     {
-        return self::GetBetween($Page,'mailto:','?');
+        return strip_tags('<a class="email"'.self::GetBetween($Page,'<a class="email"','</a>')."</a>");
     }
 
     //Отдает массив с имейлами
