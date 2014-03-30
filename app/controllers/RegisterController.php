@@ -13,7 +13,7 @@ class RegisterController extends BaseController {
 		}
 
 		$input = Input::get();
-		#$input = self::getValidData($input);
+		$input = self::getValidData($input);
 
 		if(!$input)
 		{
@@ -32,11 +32,9 @@ class RegisterController extends BaseController {
 
 	private static function getValidData($data)
 	{
-		$result = json_decode($data, true);
-
-		if(!isset($result['register_id']) || !isset($result['category']))
+		if(!isset($data['register_id']) || !isset($data['category']))
 			return false;
 
-		return $result;
+		return $data;
 	}
 }
