@@ -372,7 +372,7 @@ return $imgs;
     //Фотографии+телефоны+имелы поста
     public static function getPostInfo($url)
     {
-		$Page=TryGetContacts($url);
+		$Page=self::TryGetContacts($url);
 		return array(
 		'images'=>self::GetImagesUrls($url),
 		'emails'=>self::ExtractMails($Page),
