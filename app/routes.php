@@ -37,6 +37,9 @@ Route::get( 'pushjob',     'PushController@pushJob');
 Route::get( 'pushflat',     'PushController@pushFlat');
 Route::post('register', 'RegisterController@register');
 
+//Get post info
+Route::get('getPostInfo',      'GetController@getPostInfo');
+
 # debug information
 Route::group(array('prefix' => 'admin'), function()
 {
