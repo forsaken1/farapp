@@ -5,8 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"unikent/curl": "dev-master",
-		"google/apiclient": "1.0.*"
+		"unikent/curl": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -35,5 +34,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }
