@@ -15,6 +15,8 @@ class CreateStackTable extends Migration {
 		Schema::create('stack', function(Blueprint $table)
 		{
 			$table->increments('id');
+
+			$table->integer('category_id')->nullable();
 			
 			$table->string('key')->nullable();
 			$table->string('link')->nullable();
