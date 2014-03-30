@@ -16,7 +16,10 @@ class GetController extends BaseController {
 			$ids[] = $category->category_id;
 		}
 
-		if (count($ids) <= 0) return Response::json(array('message' => 'User not select categories'));
+		if (count($ids) <= 0) return Response::json(array(
+			'time' => Carbon\Carbon::now()->toDateTimeString(),
+			'items' => array(),
+		));
 
 		return Response::json(array(
 			'time' => Carbon\Carbon::now()->toDateTimeString(),
