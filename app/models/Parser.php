@@ -240,7 +240,7 @@ class Parser
                     'img' => (is_null($post->find('td[data-bulletin-id=' .  $key. ']>a>img', 0))) ? null : $post->find('td[data-bulletin-id=' .  $key. ']>a>img', 0)->getAttribute('src'),
                     'subject' => (is_null($post->find('a.bulletinLink', 0))) ? null : $post->find('a.bulletinLink', 0)->innertext,
                     'price' => (is_null($post->find('div.finalPrice', 0))) ? null : $post->find('div.finalPrice', 0)->innertext,
-                    'annotation' => (is_null($post->find('div.annotation', 0))) ? null : $post->find('div.annotation', 0)->innertext,
+                    'annotation' => (is_null($post->find('div.annotation', 0))) ? null : strip_tags($post->find('div.annotation', 0)->innertext),
                     'category_id' => $category_id,
                 );
             }
