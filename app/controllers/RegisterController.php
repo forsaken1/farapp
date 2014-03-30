@@ -12,7 +12,7 @@ class RegisterController extends BaseController {
 			return Response::json(array('message' => 'Bad headers: not json'));
 		}
 
-		$input = Input::json();
+		$input = Input::get();
 		#$input = self::getValidData($input);
 
 		if(!$input)
