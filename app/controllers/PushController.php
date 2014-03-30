@@ -75,7 +75,7 @@ class PushController extends BaseController {
 		{
 			foreach($users as $user)
 			{
-				if(!$user->category_id($category_id))
+				if(!$user->categoryId($category_id))
 					continue;
 
 				$message = "Новые объявления на Farpost: $count ".self::$category_names[$category_id];
